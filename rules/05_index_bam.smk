@@ -7,9 +7,11 @@ rule index_bam:
     threads: threads_for("index_bam", 2)
     resources:
         mem_mb=mem_for("index_bam", 2000),
-        runtime_minutes=runtime_for("index_bam", 30)
+        runtime=runtime_for("index_bam", 30)
     log:
         "results/logs/{sample}.index.log"
+    conda:
+        "envs/ngs.yaml"
     shell:
         """
         mkdir -p results/logs

@@ -4,14 +4,12 @@ samples:
   - SRX12776583_SRR16574629
   - SRX12776584_SRR16574630
 
-tool_env: /path/to/conda/env
-
 reference_fasta: reference/hs1.fa
 bwa_index: reference/hs1.fa
 
 trim: true
 trim_adapters:
-  # Guessed default for standard Illumina paired-end libraries.
+  # Fallback adapters used only if guessadapt does not return a usable sequence.
   read1: AGATCGGAAGAGCACACGTCTGAACTCCAGTCA
   read2: AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT
 trim_quality_cutoff: 20
@@ -27,19 +25,22 @@ threads:
 resources:
   index:
     mem_mb: 4000
-    runtime_minutes: 60
+    runtime: 60
   trim:
     mem_mb: 4000
-    runtime_minutes: 60
+    runtime: 60
+  guess_adapters:
+    mem_mb: 2000
+    runtime: 15
   map:
     mem_mb: 16000
-    runtime_minutes: 240
+    runtime: 240
   sort:
     mem_mb: 8000
-    runtime_minutes: 120
+    runtime: 120
   index_bam:
     mem_mb: 2000
-    runtime_minutes: 30
+    runtime: 30
 
 sort_memory_per_thread: 1G
 

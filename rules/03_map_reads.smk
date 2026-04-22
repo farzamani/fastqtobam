@@ -10,9 +10,11 @@ rule map_reads:
     threads: threads_for("map", 8)
     resources:
         mem_mb=mem_for("map", 16000),
-        runtime_minutes=runtime_for("map", 240)
+        runtime=runtime_for("map", 240)
     log:
         "results/logs/{sample}.bwa-mem2.log"
+    conda:
+        "envs/ngs.yaml"
     params:
         rg=lambda wildcards: read_group(wildcards.sample)
     shell:

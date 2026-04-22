@@ -1,8 +1,10 @@
 channels:
   - conda-forge
   - bioconda
+  - micknudsen
   - defaults
 dependencies:
   - bwa-mem2=2.3
   - cutadapt=5.1
+  - guessadapt
   - samtools=1.22.1

@@ -16,6 +16,7 @@ rule all:
 
 
 include: "rules/01_prepare_reference.smk"
+include: "rules/02_guess_adapters.smk"
 include: "rules/02_trim_reads.smk"
 include: "rules/03_map_reads.smk"
 include: "rules/04_sort_bam.smk"

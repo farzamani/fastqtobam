@@ -1,6 +1,6 @@
 # FASTQ to BAM Snakemake Workflow
 
-Minimal Snakemake workflow for paired-end FASTQ alignment. The pipeline optionally trims Illumina adapters with `cutadapt`, aligns reads with `bwa-mem2`, and produces sorted, indexed BAM files with `samtools`.
+Minimal Snakemake workflow for paired-end FASTQ alignment. The pipeline guesses adapter sequences with `guessadapt`, trims reads with `cutadapt`, aligns with `bwa-mem2`, and produces sorted, indexed BAM files with `samtools`.
 
 ## Input
 
@@ -20,19 +20,19 @@ The workflow builds the `bwa-mem2` index automatically if it is missing.
 Dry-run:
 
 ```bash
-snakemake -n -p
+snakemake -n -p --use-conda
 ```
 
 Run locally:
 
 ```bash
-snakemake --cores 8
+snakemake --cores 8 --use-conda
 ```
 
 Run on SLURM:
 
 ```bash
-snakemake --jobs 20 --executor slurm
+snakemake --jobs 20 --executor slurm --use-conda
 ```
 
 ## Output
@@ -44,4 +44,5 @@ snakemake --jobs 20 --executor slurm
 
 - Rule files are in `rules/`
 - Main settings are in `config/config.yaml`
-- Adapter sequences are guessed Illumina defaults and may need adjustment for other library types
+- `guessadapt` runs before trimming for each sample
+- Configured adapter sequences are kept as a fallback if `guessadapt` does not produce a usable adapter

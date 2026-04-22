@@ -7,7 +7,6 @@ THREADS = config.get("threads", {})
 RESOURCES = config.get("resources", {})
 READ_GROUP = config.get("read_group", {})
 TRIM_ADAPTERS = config.get("trim_adapters", {})
-BIOINFO_ENV = config.get("tool_env", "/Users/au726678/miniforge3/envs/bioinfo")
 TRIM_READ1_ADAPTER = TRIM_ADAPTERS.get(
     "read1", "AGATCGGAAGAGCACACGTCTGAACTCCAGTCA"
 )
@@ -16,9 +15,6 @@ TRIM_READ2_ADAPTER = TRIM_ADAPTERS.get(
 )
 TRIM_QUALITY_CUTOFF = config.get("trim_quality_cutoff", 20)
 MINIMUM_TRIMMED_LENGTH = config.get("minimum_trimmed_length", 30)
-
-shell.prefix(f"export PATH='{BIOINFO_ENV}/bin':$PATH; ")
-
 
 def threads_for(step, default):
     return THREADS.get(step, default)
@@ -29,7 +25,7 @@ def mem_for(step, default):
 
 
 def runtime_for(step, default):
-    return RESOURCES.get(step, {}).get("runtime_minutes", default)
+    return RESOURCES.get(step, {}).get("runtime", default)
 
 
 def map_read1(wildcards):

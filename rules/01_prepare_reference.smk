@@ -11,9 +11,11 @@ rule index_reference:
     threads: threads_for("index", 4)
     resources:
         mem_mb=mem_for("index", 4000),
-        runtime_minutes=runtime_for("index", 60)
+        runtime=runtime_for("index", 60)
     log:
         "results/logs/reference.index.log"
+    conda:
+        "envs/ngs.yaml"
     shell:
         """
         mkdir -p results/logs

@@ -7,9 +7,11 @@ rule sort_bam:
     threads: threads_for("sort", 4)
     resources:
         mem_mb=mem_for("sort", 8000),
-        runtime_minutes=runtime_for("sort", 120)
+        runtime=runtime_for("sort", 120)
     log:
         "results/logs/{sample}.sort.log"
+    conda:
+        "envs/ngs.yaml"
     params:
         mem_per_thread=config.get("sort_memory_per_thread", "1G")
     shell:
