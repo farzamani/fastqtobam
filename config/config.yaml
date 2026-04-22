@@ -1,8 +1,4 @@
-samples:
-  - SRX12776581_SRR16574627
-  - SRX12776582_SRR16574628
-  - SRX12776583_SRR16574629
-  - SRX12776584_SRR16574630
+samples_file: config/samples.yaml
 
 reference_fasta: reference/hs1.fa
 bwa_index: reference/hs1.fa

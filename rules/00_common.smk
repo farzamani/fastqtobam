@@ -1,4 +1,10 @@
-SAMPLES = config["samples"]
+import yaml
+
+with open(config["samples_file"]) as handle:
+    sample_config = yaml.safe_load(handle)
+
+SAMPLES = sample_config["samples"]
+
 REFERENCE_SOURCE = config["reference_fasta"]
 REFERENCE_READY = REFERENCE_SOURCE
 BWA_INDEX_PREFIX = config.get("bwa_index", REFERENCE_READY)
