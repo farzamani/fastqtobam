@@ -1,0 +1,7 @@
+reads/*
+reference/*
+results/*
+
+.snakemake
+AGENTS.md
+

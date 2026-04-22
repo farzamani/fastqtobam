@@ -1,0 +1,8 @@
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - bwa-mem2=2.3
+  - cutadapt=5.1
+  - samtools=1.22.1

@@ -1,0 +1,49 @@
+samples:
+  - SRX12776581_SRR16574627
+  - SRX12776582_SRR16574628
+  - SRX12776583_SRR16574629
+  - SRX12776584_SRR16574630
+
+tool_env: /Users/au726678/miniforge3/envs/bioinfo
+
+reference_fasta: reference/hs1.fa
+bwa_index: reference/hs1.fa
+
+trim: true
+trim_adapters:
+  # Guessed default for standard Illumina paired-end libraries.
+  read1: AGATCGGAAGAGCACACGTCTGAACTCCAGTCA
+  read2: AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT
+trim_quality_cutoff: 20
+minimum_trimmed_length: 30
+
+threads:
+  index: 4
+  trim: 4
+  map: 8
+  sort: 4
+  index_bam: 2
+
+resources:
+  index:
+    mem_mb: 4000
+    runtime_minutes: 60
+  trim:
+    mem_mb: 4000
+    runtime_minutes: 60
+  map:
+    mem_mb: 16000
+    runtime_minutes: 240
+  sort:
+    mem_mb: 8000
+    runtime_minutes: 120
+  index_bam:
+    mem_mb: 2000
+    runtime_minutes: 30
+
+sort_memory_per_thread: 1G
+
+read_group:
+  platform: ILLUMINA
+  library: default_library
+  platform_unit: default_unit
