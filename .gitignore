@@ -1,7 +1,12 @@
-reads/*
-reference/*
+reads/*.gz
 results/*
 
 .snakemake
 AGENTS.md
 
+reference/*.0123
+reference/*.amb
+reference/*.ann
+reference/*.bwt.2bit.64
+reference/*.pac
+reference/hs1.fa
