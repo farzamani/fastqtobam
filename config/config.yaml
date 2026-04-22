@@ -4,7 +4,7 @@ samples:
   - SRX12776583_SRR16574629
   - SRX12776584_SRR16574630
 
-tool_env: /Users/au726678/miniforge3/envs/bioinfo
+tool_env: /path/to/conda/env
 
 reference_fasta: reference/hs1.fa
 bwa_index: reference/hs1.fa
