@@ -1,27 +1,67 @@
+# Main workflow configuration.
+# Keys marked "mandatory" should be reviewed before the first real run.
+# Keys marked "optional" can usually be left at their defaults and tuned later.
+
+# Mandatory:
+# Path to the YAML file listing sample IDs. Keeping samples separate makes it
+# easier to swap cohorts without touching the rest of the workflow settings.
 samples_file: config/samples.yaml
 
+# Mandatory:
+# Reference FASTA used for alignment and indexing. This directly affects mapping
+# coordinates and comparability to other studies, so only change it deliberately.
 reference_fasta: reference/hs1.fa
+
+# Optional:
+# Prefix used for bwa-mem2 index files. In the simple case this should match the
+# reference FASTA path. Only change it if you want the index written elsewhere.
 bwa_index: reference/hs1.fa
 
+# Optional:
+# Whether to trim reads before alignment. Keep this enabled for public cfDNA/cfWGS
+# FASTQs unless you are certain the files are already adapter-clean.
 trim: true
+
+# Optional fallback:
+# These adapters are used only if guessadapt does not return a usable sequence.
+# They are treated as a shared pool of candidate adapter motifs for both read 1
+# and read 2, rather than being tied to a specific mate.
 trim_adapters:
-  # Fallback adapters used only if guessadapt does not return a usable sequence.
-  read1: AGATCGGAAGAGCACACGTCTGAACTCCAGTCA
-  read2: AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT
+  - CTGTCTCTTATA
+  - AGATCGGAAGAGC
+  - TGGAATTCTCGG
+
+# Optional:
+# End-trimming quality threshold for cutadapt. Q20 is a common balance between
+# retaining reads and trimming low-confidence trailing bases.
 trim_quality_cutoff: 20
+
+# Optional:
+# Reads shorter than this after trimming are discarded. This helps remove very
+# short fragments that are often uninformative or map unreliably.
 minimum_trimmed_length: 30
 
+# Optional:
+# Per-rule CPU allocation. These values affect SLURM scheduling and memory
+# pressure. Increase only when the corresponding tool benefits from more threads.
 threads:
-  index: 4
+  index: 8
   trim: 4
   map: 8
+  name_sort: 4
+  fixmate: 2
   sort: 4
+  filter_template_length: 2
+  mark_duplicates: 4
   index_bam: 2
 
+# Optional:
+# Per-rule memory and wall time for local runs and SLURM submission. These are
+# the main knobs to adjust when jobs fail with OOM or time-limit errors.
 resources:
   index:
-    mem_mb: 4000
-    runtime: 60
+    mem_mb: 32000
+    runtime: 240
   trim:
     mem_mb: 4000
     runtime: 60
@@ -31,15 +71,51 @@ resources:
   map:
     mem_mb: 16000
     runtime: 240
+  name_sort:
+    mem_mb: 8000
+    runtime: 120
+  fixmate:
+    mem_mb: 4000
+    runtime: 60
   sort:
+    mem_mb: 8000
+    runtime: 120
+  filter_template_length:
+    mem_mb: 4000
+    runtime: 60
+  mark_duplicates:
     mem_mb: 8000
     runtime: 120
   index_bam:
     mem_mb: 2000
     runtime: 30
 
+# Optional:
+# Memory limit passed to samtools sort per thread. Total sort memory is roughly
+# this value multiplied by sort threads, so adjust together with threads.sort.
 sort_memory_per_thread: 1G
 
+# Optional:
+# Template-length filtering makes the BAM closer to the published Tao cfWGS
+# processing strategy. Leave enabled for comparability; disable for a more
+# permissive BAM that keeps all mapped fragment lengths.
+template_length_filter:
+  enabled: true
+  min_bp: 20
+  max_bp: 1000
+  require_proper_pair: true
+
+# Optional:
+# Duplicate marking is useful for cfDNA/cfWGS style analyses where duplicate
+# artifacts can distort coverage and fragment metrics. Keeping duplicates marked
+# but not removed is a conservative default.
+duplicate_marking:
+  enabled: true
+  remove_duplicates: false
+
+# Optional:
+# Read group metadata written into the BAM header. These fields help downstream
+# tools track library provenance. Update them if you have more specific metadata.
 read_group:
   platform: ILLUMINA
   library: default_library

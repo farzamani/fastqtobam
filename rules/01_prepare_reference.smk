@@ -8,10 +8,10 @@ rule index_reference:
         BWA_INDEX_PREFIX + ".ann",
         BWA_INDEX_PREFIX + ".bwt.2bit.64",
         BWA_INDEX_PREFIX + ".pac",
-    threads: threads_for("index", 4)
+    threads: threads_for("index", 8)
     resources:
-        mem_mb=mem_for("index", 4000),
-        runtime=runtime_for("index", 60)
+        mem_mb=mem_for("index", 32000),
+        runtime=runtime_for("index", 240)
     log:
         "results/logs/reference.index.log"
     conda:

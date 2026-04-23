@@ -17,29 +17,34 @@ rule trim_reads:
     conda:
         "envs/ngs.yaml"
     params:
-        adapter_r1=TRIM_READ1_ADAPTER,
-        adapter_r2=TRIM_READ2_ADAPTER,
+        fallback_args=fallback_cutadapt_args(),
         quality_cutoff=TRIM_QUALITY_CUTOFF,
         minimum_length=MINIMUM_TRIMMED_LENGTH
     shell:
         """
         mkdir -p results/trimmed results/logs
-        adapter_r1="{params.adapter_r1}"
-        adapter_r2="{params.adapter_r2}"
-        if [ -s "{input.guessed_r1}" ]; then
+        if [ -s "{input.guessed_r1}" ] && [ -s "{input.guessed_r2}" ]; then
             adapter_r1=$(tr -d '\\r\\n' < "{input.guessed_r1}")
-        fi
-        if [ -s "{input.guessed_r2}" ]; then
             adapter_r2=$(tr -d '\\r\\n' < "{input.guessed_r2}")
+            cutadapt \
+                --cores {threads} \
+                -a "$adapter_r1" \
+                -A "$adapter_r2" \
+                -q {params.quality_cutoff} \
+                -m {params.minimum_length} \
+                -o {output.r1} \
+                -p {output.r2} \
+                {input.r1} {input.r2} \
+                > {log} 2>&1
+        else
+            cutadapt \
+                --cores {threads} \
+                {params.fallback_args} \
+                -q {params.quality_cutoff} \
+                -m {params.minimum_length} \
+                -o {output.r1} \
+                -p {output.r2} \
+                {input.r1} {input.r2} \
+                > {log} 2>&1
         fi
-        cutadapt \
-            --cores {threads} \
-            -a "$adapter_r1" \
-            -A "$adapter_r2" \
-            -q {params.quality_cutoff} \
-            -m {params.minimum_length} \
-            -o {output.r1} \
-            -p {output.r2} \
-            {input.r1} {input.r2} \
-            > {log} 2>&1
         """
