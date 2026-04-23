@@ -11,7 +11,7 @@ rule index_bam:
     log:
         "results/logs/{sample}.index.log"
     conda:
-        "envs/ngs.yaml"
+        NGS_ENV_FILE
     shell:
         """
         mkdir -p results/logs

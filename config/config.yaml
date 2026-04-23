@@ -46,6 +46,7 @@ minimum_trimmed_length: 30
 # pressure. Increase only when the corresponding tool benefits from more threads.
 threads:
   index: 8
+  fastqc: 2
   trim: 4
   map: 8
   name_sort: 4
@@ -54,6 +55,8 @@ threads:
   filter_template_length: 2
   mark_duplicates: 4
   index_bam: 2
+  samtools_stats: 2
+  multiqc: 1
 
 # Optional:
 # Per-rule memory and wall time for local runs and SLURM submission. These are
@@ -65,6 +68,9 @@ resources:
   trim:
     mem_mb: 4000
     runtime: 60
+  fastqc:
+    mem_mb: 2000
+    runtime: 30
   guess_adapters:
     mem_mb: 2000
     runtime: 15
@@ -89,11 +95,24 @@ resources:
   index_bam:
     mem_mb: 2000
     runtime: 30
+  samtools_stats:
+    mem_mb: 2000
+    runtime: 30
+  multiqc:
+    mem_mb: 2000
+    runtime: 30
 
 # Optional:
 # Memory limit passed to samtools sort per thread. Total sort memory is roughly
 # this value multiplied by sort threads, so adjust together with threads.sort.
 sort_memory_per_thread: 1G
+
+# Optional:
+# FastQC on raw FASTQ files gives a simple read-level QC layer before trimming.
+# Leave this enabled if you want MultiQC to include adapter-content and base-
+# quality plots from the original reads.
+fastqc:
+  enabled: true
 
 # Optional:
 # Template-length filtering makes the BAM closer to the published Tao cfWGS

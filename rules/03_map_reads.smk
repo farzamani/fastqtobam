@@ -14,7 +14,7 @@ rule map_reads:
     log:
         "results/logs/{sample}.bwa-mem2.log"
     conda:
-        "envs/ngs.yaml"
+        NGS_ENV_FILE
     params:
         rg=lambda wildcards: read_group(wildcards.sample)
     shell:

@@ -1,3 +1,4 @@
+import os
 import yaml
 
 # Load sample IDs from a separate YAML file so cohorts can be swapped without
@@ -6,6 +7,7 @@ with open(config["samples_file"]) as handle:
     sample_config = yaml.safe_load(handle)
 
 SAMPLES = sample_config["samples"]
+NGS_ENV_FILE = os.path.join(workflow.basedir, "envs", "ngs.yaml")
 
 # Reference configuration:
 # `reference_fasta` is the actual FASTA used for bwa-mem2 alignment.
@@ -31,6 +33,7 @@ TRIM_ADAPTERS = config.get(
 )
 TEMPLATE_LENGTH_FILTER = config.get("template_length_filter", {})
 DUPLICATE_MARKING = config.get("duplicate_marking", {})
+FASTQC_CONFIG = config.get("fastqc", {})
 
 # Fallback adapter sequences:
 # These are used only if guessadapt does not provide a usable adapter sequence
@@ -56,6 +59,7 @@ TEMPLATE_FILTER_REQUIRE_PROPER_PAIR = TEMPLATE_LENGTH_FILTER.get(
 # rather than only duplicate tagging.
 DUPLICATE_MARKING_ENABLED = DUPLICATE_MARKING.get("enabled", True)
 DUPLICATE_REMOVE = DUPLICATE_MARKING.get("remove_duplicates", False)
+FASTQC_ENABLED = FASTQC_CONFIG.get("enabled", True)
 
 
 # Helper accessors centralize thread/memory/runtime lookups. This keeps the
@@ -76,6 +80,20 @@ def fallback_cutadapt_args():
     return " ".join(
         f"-a {adapter} -A {adapter}" for adapter in FALLBACK_ADAPTERS
     )
+
+
+def fastqc_outputs():
+    if not FASTQC_ENABLED:
+        return []
+    outputs = []
+    for sample in SAMPLES:
+        outputs.extend(
+            [
+                f"results/qc/fastqc/{sample}_1_fastqc.zip",
+                f"results/qc/fastqc/{sample}_2_fastqc.zip",
+            ]
+        )
+    return outputs
 
 
 # These functions define whether mapping should consume trimmed FASTQs or the

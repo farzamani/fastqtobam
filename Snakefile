@@ -13,6 +13,9 @@ rule all:
     input:
         expand("results/bam/{sample}.bam", sample=SAMPLES),
         expand("results/bam/{sample}.bam.bai", sample=SAMPLES),
+        expand("results/qc/samtools_stats/{sample}.txt", sample=SAMPLES),
+        fastqc_outputs(),
+        "results/qc/multiqc/multiqc_report.html",
 
 
 include: "rules/01_prepare_reference.smk"
@@ -21,3 +24,4 @@ include: "rules/02_trim_reads.smk"
 include: "rules/03_map_reads.smk"
 include: "rules/04_postprocess_bam.smk"
 include: "rules/05_index_bam.smk"
+include: "rules/06_qc.smk"

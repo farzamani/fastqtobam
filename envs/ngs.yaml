@@ -6,5 +6,7 @@ channels:
 dependencies:
   - bwa-mem2=2.3
   - cutadapt=5.1
+  - fastqc
   - guessadapt
+  - multiqc
   - samtools=1.22.1

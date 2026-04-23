@@ -11,7 +11,7 @@ rule name_sort_bam:
     log:
         "results/logs/{sample}.namesort.log"
     conda:
-        "envs/ngs.yaml"
+        NGS_ENV_FILE
     params:
         mem_per_thread=config.get("sort_memory_per_thread", "1G")
     shell:
@@ -40,7 +40,7 @@ rule fixmate_bam:
     log:
         "results/logs/{sample}.fixmate.log"
     conda:
-        "envs/ngs.yaml"
+        NGS_ENV_FILE
     shell:
         """
         mkdir -p results/tmp results/logs
@@ -65,7 +65,7 @@ rule sort_bam:
     log:
         "results/logs/{sample}.sort.log"
     conda:
-        "envs/ngs.yaml"
+        NGS_ENV_FILE
     params:
         mem_per_thread=config.get("sort_memory_per_thread", "1G")
     shell:
@@ -93,7 +93,7 @@ rule filter_template_length:
     log:
         "results/logs/{sample}.template_filter.log"
     conda:
-        "envs/ngs.yaml"
+        NGS_ENV_FILE
     params:
         enabled=str(TEMPLATE_FILTER_ENABLED).lower(),
         min_bp=TEMPLATE_FILTER_MIN_BP,
@@ -126,7 +126,7 @@ rule mark_duplicates:
     log:
         "results/logs/{sample}.markdup.log"
     conda:
-        "envs/ngs.yaml"
+        NGS_ENV_FILE
     params:
         enabled=str(DUPLICATE_MARKING_ENABLED).lower(),
         remove_flag="-r" if DUPLICATE_REMOVE else ""

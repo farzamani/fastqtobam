@@ -15,7 +15,7 @@ rule trim_reads:
     log:
         "results/logs/{sample}.cutadapt.log"
     conda:
-        "envs/ngs.yaml"
+        NGS_ENV_FILE
     params:
         fallback_args=fallback_cutadapt_args(),
         quality_cutoff=TRIM_QUALITY_CUTOFF,

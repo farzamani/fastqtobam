@@ -39,12 +39,18 @@ snakemake --jobs 20 --executor slurm --use-conda
 
 - `results/bam/<sample>.bam`
 - `results/bam/<sample>.bam.bai`
+- `results/qc/fastqc/*`
+- `results/qc/samtools_stats/<sample>.txt`
+- `results/qc/multiqc/multiqc_report.html`
 
 ## Notes
 
 - Rule files are in `rules/`
 - Main settings are in `config/config.yaml`
+- The shared conda environment file is resolved from the workflow root so `--use-conda` works more reliably on cluster filesystems
 - `guessadapt` runs before trimming for each sample
 - Configured adapter sequences are kept as a fallback if `guessadapt` does not produce a usable adapter
+- Raw-read FastQC is controlled by `fastqc`
 - Template-length filtering is controlled by `template_length_filter`
 - Duplicate marking is controlled by `duplicate_marking`
+- Simple QC is included via `fastqc`, `samtools stats`, and `multiqc`

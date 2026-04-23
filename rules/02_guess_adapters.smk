@@ -13,7 +13,7 @@ rule guess_adapters:
     log:
         "results/logs/{sample}.guessadapt.log"
     conda:
-        "envs/ngs.yaml"
+        NGS_ENV_FILE
     shell:
         """
         mkdir -p results/adapters results/logs
