@@ -63,7 +63,7 @@ threads:
 # the main knobs to adjust when jobs fail with OOM or time-limit errors.
 resources:
   index:
-    mem_mb: 32000
+    mem_mb: 128000
     runtime: 240
   trim:
     mem_mb: 4000
@@ -75,7 +75,7 @@ resources:
     mem_mb: 2000
     runtime: 15
   map:
-    mem_mb: 16000
+    mem_mb: 64000
     runtime: 240
   name_sort:
     mem_mb: 8000

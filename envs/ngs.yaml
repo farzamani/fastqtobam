@@ -1,3 +1,4 @@
+name: ngs
 channels:
   - conda-forge
   - bioconda
