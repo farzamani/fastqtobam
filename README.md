@@ -1,6 +1,8 @@
 # FASTQ to BAM Snakemake Workflow
 
-Minimal Snakemake workflow for paired-end FASTQ alignment. The pipeline guesses adapter sequences with `guessadapt`, trims reads with `cutadapt`, aligns with `bwa-mem2`, and produces sorted, indexed BAM files with `samtools`. Template-length filtering and duplicate marking are configurable so the workflow can more closely match published cfWGS pipelines while still using `hs1`.
+Minimal Snakemake workflow for paired-end FASTQ alignment. The pipeline guesses adapter sequences with `guessadapt`, trims reads with `cutadapt`, aligns with `bwa-mem2`, and produces sorted, indexed BAM files with `samtools`. Template-length filtering and duplicate marking are configurable so the workflow can more closely match the cfWGS preprocessing described by Tao et al. while still using `hs1`.
+
+This project was built with help from OpenAI Codex.
 
 ## Input
 
@@ -9,7 +11,7 @@ Minimal Snakemake workflow for paired-end FASTQ alignment. The pipeline guesses 
 
 Samples are listed in `config/samples.yaml`.
 
-## Reference
+## Reference Genome
 
 - `reference/hs1.fa`
 
@@ -54,3 +56,7 @@ snakemake --jobs 20 --executor slurm --use-conda
 - Template-length filtering is controlled by `template_length_filter`
 - Duplicate marking is controlled by `duplicate_marking`
 - Simple QC is included via `fastqc`, `samtools stats`, and `multiqc`
+
+## Publication Reference
+
+Tao Y. et al. Cell-free multi-omics analysis reveals potential biomarkers in gastrointestinal cancer patients' blood. *Cell Reports Medicine* 4(11):101281, 2023. https://doi.org/10.1016/j.xcrm.2023.101281
