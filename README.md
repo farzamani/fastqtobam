@@ -13,9 +13,24 @@ Samples are listed in `config/samples.yaml`.
 
 ## Reference Genome
 
+The default setup expects:
+
 - `reference/hs1.fa`
 
 The workflow builds the `bwa-mem2` index automatically if it is missing.
+
+You can use another reference genome, such as `hg38`, by placing the FASTA in
+`reference/` and updating `config/config.yaml`.
+
+Example for `hg38`:
+
+```yaml
+reference_fasta: reference/hg38.fa
+bwa_index: reference/hg38.fa
+```
+
+Then run Snakemake normally. If the `bwa-mem2` index files for
+`reference/hg38.fa` are missing, the workflow will create them before mapping.
 
 ## Run
 

@@ -8,13 +8,15 @@
 samples_file: config/samples.yaml
 
 # Mandatory:
-# Reference FASTA used for alignment and indexing. This directly affects mapping
-# coordinates and comparability to other studies, so only change it deliberately.
+# Reference FASTA used for alignment and indexing. hs1 is the default here, but
+# other references such as hg38 can be used by changing this path deliberately.
+# The chosen reference directly affects mapping coordinates and comparability.
 reference_fasta: reference/hs1.fa
 
 # Optional:
 # Prefix used for bwa-mem2 index files. In the simple case this should match the
-# reference FASTA path. Only change it if you want the index written elsewhere.
+# reference FASTA path, including when switching to another reference like hg38.
+# Only change it separately if you want the index written elsewhere.
 bwa_index: reference/hs1.fa
 
 # Optional:
